@@ -14,12 +14,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hono/node-server": "^1.12.1",
+    "@hono/zod-openapi": "^0.16.0",
+    "@hono/zod-validator": "^0.2.2",
+    "@scalar/hono-api-reference": "^0.5.142",
+    "argon2": "^0.40.3",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
+    "hono": "^4.5.8",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0",
     "postgres": "^3.4.4"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.4.1",
     "drizzle-kit": "^0.24.1",
     "tsx": "^4.7.1",

@@ -9,6 +9,6 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "drizzle.config.ts", "server.js"],
   "exclude": ["node_modules"]
 }

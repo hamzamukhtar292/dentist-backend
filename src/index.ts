@@ -1,21 +1,36 @@
 import "dotenv/config"
-import {db } from "./drizzle/db";
-import { UserTable } from "./drizzle/schema";
+import { cors } from 'hono/cors'
+import { apiReference } from "@scalar/hono-api-reference";
+import { serve } from '@hono/node-server';
+import  userRouter  from './userRoutes/userRoutes';
+import { Hono } from "hono";
+import authRouter from "./authRoutes/authRoutes";
+const app = new Hono();
 
-async function main() {
-    // await db.delete(UserTable)
-    await db.insert(UserTable).values({
-        name: "Hamza",
-        email: "hamzamukhtar292@gmail.com",
-        password: "securepassword", // Consider hashing passwords in production
-        profileImage: "profile.jpg",
-        phoneNumber: "1234567890",
-        address: "1234 Street, City, Country",
-        role: "ADMIN", // Role set to ADMIN
-        status: "ACTIVE", // Status set to ACTIVE
-    })
-    const user = await db.query.UserTable.findFirst()
-    console.log(user);
-}
+// Enable CORS for all routes
+app.use('*',cors({
+  origin: '*', // TODO: for development- should be clearer.
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'], // replace with the methods your client uses
+  allowHeaders: ['*'], // TODO: for development
+}));
 
-main()
+  app.get(
+    "/",
+    apiReference({
+      spec: {
+        url: "/doc",
+      },
+    }),
+  );
+  app.get("/test", (c) => {
+    return c.json({ message: "Server is running!" });
+  });
+
+  app.route('/auth', authRouter);
+  app.route('/api', userRouter);
+  
+  console.log(`Server is running on port ${process.env.PORT}`);
+  serve({
+    fetch: app.fetch,
+    port:process.env.PORT as any,
+  });
