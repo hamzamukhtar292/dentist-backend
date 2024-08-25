@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",        // Use ESNext or ES2020 to allow import/export syntax
+    "target": "ESNext",        // Target modern JavaScript syntax
+    "moduleResolution": "Node",
+    "outDir": "./dist",        // Output directory for compiled JS files
+    "esModuleInterop": true,   // Enables compatibility with CommonJS modules
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

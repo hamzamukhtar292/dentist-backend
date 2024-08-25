@@ -1,0 +1,28 @@
+{
+  "name": "dental-clinic-backend",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "db:generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "db:migrate": "tsx src/drizzle/migrate.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.33.0",
+    "pg": "^8.12.0",
+    "postgres": "^3.4.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.4.1",
+    "drizzle-kit": "^0.24.1",
+    "tsx": "^4.7.1",
+    "typescript": "^5.5.4"
+  }
+}
