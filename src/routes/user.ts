@@ -4,7 +4,7 @@ import { db } from '../drizzle/db';
 import { UserTable } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import argon2 from 'argon2';
-import { jwtMiddleware } from '../middlesware';
+import { jwtMiddleware } from '../middleware/jwt';
 
 const userRouter = new Hono();
 userRouter.use('*', jwtMiddleware);

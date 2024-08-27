@@ -2,9 +2,12 @@ import "dotenv/config"
 import { cors } from 'hono/cors'
 import { apiReference } from "@scalar/hono-api-reference";
 import { serve } from '@hono/node-server';
-import  userRouter  from './userRoutes/userRoutes';
+import  userRouter  from './routes/user';
 import { Hono } from "hono";
-import authRouter from "./authRoutes/authRoutes";
+import authRouter from "./routes/auth";
+import feeRouter from "./routes/fees";
+import patientRoute from "./routes/patients";
+import historyRoute from "./routes/history";
 const app = new Hono();
 
 // Enable CORS for all routes
@@ -28,6 +31,12 @@ app.use('*',cors({
 
   app.route('/auth', authRouter);
   app.route('/api', userRouter);
+  app.route('/api', feeRouter);
+  app.route('/api', patientRoute);
+  app.route('/api', historyRoute);
+
+
+
   
   console.log(`Server is running on port ${process.env.PORT}`);
   serve({
