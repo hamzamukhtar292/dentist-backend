@@ -35,9 +35,6 @@ app.use('*',cors({
   app.route('/api', patientRoute);
   app.route('/api', historyRoute);
 
-
-
-  
   console.log(`Server is running on port ${process.env.PORT}`);
   serve({
     fetch: app.fetch,

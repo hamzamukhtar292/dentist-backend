@@ -21,13 +21,16 @@ userRouter.get('/users', async (c) => {
   }
 });
 
-userRouter.get('/users/:id', async (c) => {
+userRouter.get('/user/:id', async (c) => {
   const userId = c.req.param('id');
   try {
-    // Fetch a single user by ID
-    const user = await db.select().from(UserTable).where(eq( UserTable.id, userId ));
-    if (user) {
-      return c.json(user);
+    // Fetch users based on the provided ID
+    const users = await db.select().from(UserTable).where(eq(UserTable.id, userId));
+    
+    // Check if any user is found
+    if (users.length > 0) {
+      // Return the first user as an object, not an array
+      return c.json(users[0]);
     } else {
       return c.notFound();
     }
@@ -36,6 +39,7 @@ userRouter.get('/users/:id', async (c) => {
     return c.json({ message: 'Error fetching user' }, 500);
   }
 });
+
 
 userRouter.post('/create-users', async (c) => {
     try {
@@ -56,7 +60,7 @@ userRouter.post('/create-users', async (c) => {
     }
   });
 
-userRouter.put('/user/:id', async (c) => {
+userRouter.put('/update-user/:id', async (c) => {
   const userId = c.req.param('id');
   console.log({userId});
   try {
