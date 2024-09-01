@@ -4,7 +4,8 @@ import { errorHandler } from '../middleware/errorHandler';
 import { eq } from 'drizzle-orm';
 import { db } from '../drizzle/db';
 import { jwtMiddleware } from '../middleware/jwt';
-
+import moment from 'moment';
+import { between } from 'drizzle-orm'; // Use appropriate ORM function for filtering
 const patientRoute = new Hono();
 
 // Apply error handling middleware
@@ -41,13 +42,27 @@ patientRoute.get('/:id', async (c) => {
   }
 });
 
-// Create a new patient
-patientRoute.post('/', async (c) => {
+patientRoute.post('/create-patient', async (c) => {
   try {
     const body = await c.req.json();
+
+    // Data validation and type conversion to ensure the correct types
+    const newPatientData = {
+      name: body.name, // Should be a string
+      age: parseInt(body.age, 10), // Convert to integer, add validation if necessary
+      address: body.address, // Should be a string
+      todayTurn: body.todayTurn,
+      phoneNumber: body.phoneNumber, // Should be a string
+      diagnose: body.diagnose || 'default', // Optional field with a default value
+      treatment: body.treatment || 'default', // Optional field with a default value
+      created_at: new Date(), // Automatically set to current date
+      updated_at: new Date(), // Automatically set to current date
+    };
+
+    // Insert into the database
     const [newPatient] = await db
       .insert(PatientTable)
-      .values(body)
+      .values(newPatientData)
       .returning();
 
     return c.json(newPatient);
@@ -57,7 +72,31 @@ patientRoute.post('/', async (c) => {
   }
 });
 
-// Update a patient by ID
+
+patientRoute.get('/patients/today', async (c) => {
+  try {
+    // Get the start and end of today using moment.js
+    const todayStart = moment().startOf('day').toDate();
+    const todayEnd = moment().endOf('day').toDate();
+
+    // Query to find users created today using the correct column name 'createdAt'
+    const usersToday = await db
+      .select()
+      .from(PatientTable)
+      .where(
+        // Filter users where 'createdAt' is between today's start and end
+        between(PatientTable.createdAt, todayStart, todayEnd)
+      );
+
+    return c.json(usersToday);
+  } catch (error) {
+    console.error('Error fetching users created today:', error);
+    return c.json({ error: 'Failed to fetch users created today' }, 500);
+  }
+});
+
+
+
 patientRoute.put('/:id', async (c) => {
   try {
     const id = c.req.param('id');
