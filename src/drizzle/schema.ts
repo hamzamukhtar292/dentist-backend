@@ -27,6 +27,8 @@ export const PatientStatus = pgEnum("patientStatus", ["PENDING", "INTREATMENT", 
 export const PatientTable = pgTable("patient", {
   id: uuid("id").primaryKey().defaultRandom().unique(), // set as primary key
   name: varchar("name"),
+  age: integer("age"),
+  address: varchar("address"),
   phoneNumber: integer("phoneNumber").notNull(),
   todayTurn: integer("turnNumber"),
   status: PatientStatus("patientStatus"),

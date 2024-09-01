@@ -8,6 +8,20 @@
       "when": 1724612236281,
       "tag": "0000_kind_thunderbolts",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1725211992797,
+      "tag": "0001_volatile_slayback",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1725216078244,
+      "tag": "0002_fixed_aaron_stack",
+      "breakpoints": true
     }
   ]
 }
