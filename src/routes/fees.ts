@@ -33,9 +33,10 @@ feeRouter.get('/:id', async (c) => {
 });
 
 // Create a new fee
-feeRouter.post('/', async (c) => {
+feeRouter.post('/create-fee', async (c) => {
   try {
     const body = await c.req.json();
+    console.log(body);
     const newFee = await db.insert(PatientFeeTable).values(body).returning();
     return c.json(newFee[0]);
   } catch (error:any) {

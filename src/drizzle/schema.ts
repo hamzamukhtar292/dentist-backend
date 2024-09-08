@@ -46,13 +46,13 @@ export const PatientTable = pgTable("patient", {
 });
 
 export const PatientFeeTable = pgTable("fees", {
-  id: uuid("id").primaryKey().defaultRandom().unique(), // set as primary key
+  id: uuid("id").primaryKey().defaultRandom().unique(), // primary key for the fee
   totalAmount: integer("totalAmount"),
   checkUpFee: integer("checkUpFee"),
   initialAmountPaid: integer("initialAmount"),
-  userId: uuid("userId").references(() => UserTable.id),
+  // userId: uuid("userId").references(() => UserTable.id), // reference to User table
   amountRemaining: integer("amountRemaining"),
-  patientId: uuid("id").references(() => PatientTable.id),
+  patientId: uuid("patientId").references(() => PatientTable.id), // renamed to avoid conflict
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

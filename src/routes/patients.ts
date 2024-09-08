@@ -53,8 +53,8 @@ patientRoute.post('/create-patient', async (c) => {
       address: body.address, // Should be a string
       todayTurn: body.todayTurn,
       phoneNumber: body.phoneNumber, // Should be a string
-      diagnose: body.diagnose || 'default', // Optional field with a default value
-      treatment: body.treatment || 'default', // Optional field with a default value
+      diagnose: body.diagnose || '', // Optional field with a default value
+      treatment: body.treatment || '', // Optional field with a default value
       created_at: new Date(), // Automatically set to current date
       updated_at: new Date(), // Automatically set to current date
     };
@@ -97,10 +97,11 @@ patientRoute.get('/patients/today', async (c) => {
 
 
 
-patientRoute.put('/:id', async (c) => {
+patientRoute.put('/patient/:id', async (c) => {
   try {
     const id = c.req.param('id');
     const body = await c.req.json();
+    console.log({body});
     const [updatedPatient] = await db
       .update(PatientTable)
       .set(body)
