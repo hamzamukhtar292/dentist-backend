@@ -1,7 +1,7 @@
 // userRoutes.ts
 import { Hono } from 'hono';
 import { db } from '../drizzle/db';
-import { UserTable } from '../drizzle/schema';
+import { UserRole, UserTable } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import argon2 from 'argon2';
 import { jwtMiddleware } from '../middleware/jwt';
@@ -20,6 +20,23 @@ userRouter.get('/users', async (c) => {
     return c.json({ message: 'Error fetching users' }, 500);
   }
 });
+
+userRouter.get('/doctors', async (c) => {
+  try {
+    // Query for users with the "DOCTOR" role
+    const doctors = await db
+      .select()
+      .from(UserTable)
+      .where(eq(UserTable.role, 'DOCTOR')); // Use 'DOCTOR' as the string value or enum directly
+
+    return c.json(doctors);
+  } catch (error) {
+    console.error("Error fetching users with role 'doctor':", error);
+    return c.json({ message: 'Error fetching users' }, 500);
+  }
+});
+
+
 
 userRouter.get('/user/:id', async (c) => {
   const userId = c.req.param('id');

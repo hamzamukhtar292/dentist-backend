@@ -12,7 +12,7 @@ const patientRoute = new Hono();
 patientRoute.use('*', errorHandler);
 patientRoute.use('*', jwtMiddleware);
 // Get all patients
-patientRoute.get('/', async (c) => {
+patientRoute.get('/patients', async (c) => {
   try {
     const patients = await db.select().from(PatientTable);
     return c.json(patients);
