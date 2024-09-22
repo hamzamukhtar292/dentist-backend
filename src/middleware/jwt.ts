@@ -5,9 +5,7 @@ const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key';
 
 export const jwtMiddleware = createMiddleware(
   async (c:any, next) => {
-    console.log(c.req.header);
     const authHeader = c.req.header('Authorization');
-    console.log(authHeader);
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return c.json({ message: 'Unauthorized' }, 401);

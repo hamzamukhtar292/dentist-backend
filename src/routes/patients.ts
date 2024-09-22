@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { PatientTable } from '../drizzle/schema';
+import { PatientFeeTable, PatientTable } from '../drizzle/schema';
 import { errorHandler } from '../middleware/errorHandler';
 import { eq } from 'drizzle-orm';
 import { db } from '../drizzle/db';
@@ -12,18 +12,37 @@ const patientRoute = new Hono();
 patientRoute.use('*', errorHandler);
 patientRoute.use('*', jwtMiddleware);
 // Get all patients
-patientRoute.get('/patients', async (c) => {
+patientRoute.get('/all-patients', async (c) => {
   try {
-    const patients = await db.select().from(PatientTable);
+    console.log("Data");
+    const patients = await db
+      .select({
+        id: PatientTable.id,
+        name: PatientTable.name,
+        age: PatientTable.age,
+        address:PatientTable.address,
+        phoneNumber: PatientTable.phoneNumber,
+        feeTotalAmount: PatientFeeTable.totalAmount,
+        feeCheckUpFee: PatientFeeTable.checkUpFee,
+        feeInitialAmountPaid: PatientFeeTable.initialAmountPaid,
+        feeAmountRemaining: PatientFeeTable.amountRemaining,
+      })
+      .from(PatientTable)
+      .leftJoin(
+        PatientFeeTable,
+        eq(PatientFeeTable.patientId, PatientTable.id) // Matching patientId
+      );
+
     return c.json(patients);
-  } catch (error) {
-    console.error('Error fetching patients:', error);
-    return c.json({ error: 'Failed to fetch patients' }, 500);
+  } catch (error: any) {
+    console.error('Error fetching patients:', error.message);
+    return c.json({ message: 'Failed to fetch patients', error: error.message }, 500);
   }
 });
 
+
 // Get a patient by ID
-patientRoute.get('/:id', async (c) => {
+patientRoute.get('/get-patient/:id', async (c) => {
   try {
     const id = c.req.param('id');
     const patient = await db
@@ -72,7 +91,6 @@ patientRoute.post('/create-patient', async (c) => {
   }
 });
 
-
 patientRoute.get('/patients/today', async (c) => {
   try {
     // Get the start and end of today using moment.js
@@ -94,8 +112,6 @@ patientRoute.get('/patients/today', async (c) => {
     return c.json({ error: 'Failed to fetch users created today' }, 500);
   }
 });
-
-
 
 patientRoute.put('/patient/:id', async (c) => {
   try {
