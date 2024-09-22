@@ -12,7 +12,7 @@ feeRouter.use('*', errorHandler);
 feeRouter.use('*', jwtMiddleware);
 
 // Get all fees
-feeRouter.get('/', async (c) => {
+feeRouter.get('/fees', async (c) => {
   try {
     const fees = await db.select().from(PatientFeeTable);
     return c.json(fees);
@@ -22,7 +22,7 @@ feeRouter.get('/', async (c) => {
 });
 
 // Get a fee by ID
-feeRouter.get('/:id', async (c) => {
+feeRouter.get('/patient-fee/:id', async (c) => {
   try {
     const id = c.req.param('id');
     const fee = await db.select().from(PatientFeeTable).where(eq(PatientFeeTable.id, id));
@@ -45,7 +45,7 @@ feeRouter.post('/create-fee', async (c) => {
 });
 
 // Update a fee by ID
-feeRouter.put('/:id', async (c) => {
+feeRouter.put('/update-fee/:id', async (c) => {
   try {
     const id = c.req.param('id');
     const body = await c.req.json();
@@ -57,7 +57,7 @@ feeRouter.put('/:id', async (c) => {
 });
 
 // Delete a fee by ID
-feeRouter.delete('/:id', async (c) => {
+feeRouter.delete('/delete-fee/:id', async (c) => {
   try {
     const id = c.req.param('id');
     await db.delete(PatientFeeTable).where(eq(PatientFeeTable.id, id));

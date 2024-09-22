@@ -7,7 +7,7 @@ import { Hono } from "hono";
 import authRouter from "./routes/auth";
 import feeRouter from "./routes/fees";
 import patientRoute from "./routes/patients";
-import historyRoute from "./routes/history";
+// import historyRoute from "./routes/history";
 const app = new Hono();
 
 // Enable CORS for all routes
@@ -33,7 +33,7 @@ app.use('*',cors({
   app.route('/api', userRouter);
   app.route('/api', feeRouter);
   app.route('/api', patientRoute);
-  app.route('/api', historyRoute);
+  // app.route('/api', historyRoute);
 
   console.log(`Server is running on port ${process.env.PORT}`);
   serve({
