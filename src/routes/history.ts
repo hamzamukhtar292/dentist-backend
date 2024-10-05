@@ -17,7 +17,6 @@
 //     const history = await db.select().from(PatientHistoryTable);
 //     return c.json(history);
 //   } catch (error) {
-//     console.error('Error fetching history records:', error);
 //     return c.json({ error: 'Failed to fetch history records' }, 500);
 //   }
 // });
