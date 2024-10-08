@@ -35,7 +35,6 @@
 //     }
 
 //     return c.json(record[0]);
-//   } catch (error) {
 //     return c.json({ error: 'Failed to fetch history record' }, 500);
 //   }
 // });
